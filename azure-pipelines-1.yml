@@ -1,0 +1,49 @@
+# Deploy to Azure Kubernetes Service
+# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- master
+
+variables:
+
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Instalacao do Nuget'
+
+- task: NuGetCommand@2
+  displayName: 'Restore do Nuget'
+  inputs:
+    restoreSolution: '$(solution)'
+
+# - task: SonarCloudPrepare@1
+#   displayName: 'Prepare Analysis Configuration'
+#   inputs:
+#     SonarCloud: 'SonarCloud'
+#     organization: 'enomoto'
+#     scannerMode: 'MSBuild'
+#     projectKey: 'docker-aks'
+#     projectName: 'docker-aks'
+
+- task: VSBuild@1
+  displayName: 'Build do Projeto'
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+# - task: SonarCloudAnalyze@1
+#   displayName: 'Run Code Analysis'
+
+# - task: SonarCloudPublish@1
+#   displayName: 'Publish Quality Gate Result'
+#   inputs:
+#     pollingTimeoutSec: '300'

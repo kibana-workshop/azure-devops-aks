@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: microsservico-ingress
+  namespace: default  
+spec:
+  rules:
+  - host: microsservico.info
+  - http:
+      paths:
+      - path: /api/clientes
+        backend:
+          serviceName: clientems
+          servicePort: 80
