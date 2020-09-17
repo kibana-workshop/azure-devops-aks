@@ -5,15 +5,7 @@
     <UserSecretsId>ce86448d-6462-4553-86b0-48b0a243c40d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Manifests\namespace.yml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Manifests\namespace.yml" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.7" />
